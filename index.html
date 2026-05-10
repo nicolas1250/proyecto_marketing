@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NexGen Store — Consolas & Videojuegos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --bg:         #05050a;
+      --bg2:        #0c0c18;
+      --surface:    #111128;
+      --surface2:   #1a1a35;
+      --border:     #2a2a55;
+      --accent:     #00f5ff;
+      --accent2:    #ff003c;
+      --accent3:    #ffe600;
+      --text:       #e8e8f0;
+      --text-muted: #7070a0;
+      --glow:       0 0 20px rgba(0,245,255,0.35);
+      --glow2:      0 0 20px rgba(255,0,60,0.35);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== SCANLINE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+      background: rgba(5,5,10,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-shadow: var(--glow);
+    }
+    .logo span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover {
+      background: rgba(0,245,255,0.1);
+      box-shadow: var(--glow);
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 4rem 5%;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,255,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(255,0,60,0.07) 0%, transparent 70%);
+    }
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.88;
+      letter-spacing: 4px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .hero-title .line1 { color: var(--text); }
+    .hero-title .line2 {
+      color: var(--accent);
+      text-shadow: var(--glow);
+      -webkit-text-stroke: 1px var(--accent);
+    }
+    .hero-title .line3 {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; margin-top: 2.5rem;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+    .btn-primary {
+      padding: 14px 36px;
+      background: var(--accent2);
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none; cursor: pointer;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      transition: box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { box-shadow: var(--glow2); transform: translateY(-2px); }
+    .btn-secondary {
+      padding: 14px 36px;
+      background: transparent;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { background: rgba(0,245,255,0.08); box-shadow: var(--glow); }
+
+    /* Floating badges */
+    .hero-badges {
+      display: flex; gap: 1.5rem; margin-top: 4rem;
+      flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+    .badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      font-size: 0.78rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .badge::before {
+      content: '▸';
+      color: var(--accent);
+      font-size: 0.6rem;
+    }
+
+    /* Grid decoration */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ===== SECTION COMMON ===== */
+    section { padding: 6rem 5%; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 3px;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .section-title span { color: var(--accent); }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ===== FEATURED PRODUCTS ===== */
+    #productos { background: var(--bg2); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5px;
+    }
+    .product-card {
+      position: relative;
+      background: var(--surface);
+      padding: 2rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.25s;
+      border: 1px solid var(--border);
+    }
+    .product-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover { background: var(--surface2); }
+    .product-card:hover::after { transform: scaleY(1); }
+    .card-platform {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .card-emoji {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 12px rgba(0,245,255,0.4));
+    }
+    .card-name {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .card-price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--accent3);
+    }
+    .card-price span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      vertical-align: super;
+    }
+    .card-tag {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      background: var(--accent2);
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    /* ===== GAMES SECTION ===== */
+    #juegos { background: var(--bg); }
+    .games-scroll {
+      display: flex; gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .game-card {
+      flex: 0 0 220px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1.2rem;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .game-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .game-cover {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--surface2), #0a0a20);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .game-genre {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .game-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .game-platform {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .game-rating {
+      position: absolute; top: 1rem; right: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent3);
+    }
+
+    /* ===== STATS BAR ===== */
+    #stats {
+      padding: 3rem 5%;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .stat-item {
+      background: var(--surface);
+      padding: 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 3.5rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-shadow: var(--glow);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* ===== BLOG POSTS ===== */
+    #blog { background: var(--bg2); }
+    .posts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+    .post-featured {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .post-img {
+      width: 100%; aspect-ratio: 16/7;
+      background: linear-gradient(135deg, #0a0a20 0%, #1a0530 50%, #050510 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem;
+      position: relative;
+    }
+    .post-img::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(transparent, var(--surface));
+    }
+    .post-body { padding: 1.8rem; }
+    .post-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .post-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+    .post-excerpt {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .posts-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+    .post-small {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.4rem;
+      display: flex; gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .post-small:hover { border-color: var(--accent); }
+    .post-small-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 56px; height: 56px;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .post-small-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .post-small-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== QUOTE FORM ===== */
+    #cotizacion {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    #cotizacion::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 100% 50%, rgba(255,0,60,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 0% 50%, rgba(0,245,255,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .form-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .form-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .form-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      appearance: none;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0,245,255,0.1);
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-select { cursor: pointer; }
+    .form-select option { background: var(--surface); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-check-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    .form-check {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .form-check:has(input:checked) {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,245,255,0.04);
+    }
+    .form-check input { display: none; }
+    .form-check::before {
+      content: '☐';
+      font-size: 1rem;
+      color: var(--border);
+      transition: color 0.2s;
+    }
+    .form-check:has(input:checked)::before {
+      content: '☑';
+      color: var(--accent);
+    }
+    .form-submit {
+      grid-column: 1 / -1;
+      margin-top: 1rem;
+      padding: 18px;
+      background: var(--accent2);
+      color: #fff;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      transition: box-shadow 0.25s, transform 0.2s;
+      position: relative;
+    }
+    .form-submit:hover {
+      box-shadow: var(--glow2);
+      transform: translateY(-2px);
+    }
+    .form-submit:active { transform: translateY(0); }
+    .form-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 1rem 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: var(--accent);
+      box-shadow: var(--glow);
+      transform: translateX(120%);
+      transition: transform 0.4s ease;
+      z-index: 200;
+      max-width: 320px;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.error { border-color: var(--accent2); color: var(--accent2); box-shadow: var(--glow2); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 4rem 5% 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.8rem; }
+    .footer-brand p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .footer-col h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.4; }
+      97% { opacity: 1; }
+      98% { opacity: 0.2; }
+    }
+    .accent-flicker {
+      animation: flicker 6s infinite;
+      color: var(--accent);
+      text-shadow: var(--glow);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .posts-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-check-group { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero-btns { flex-direction: column; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .form-box { padding: 1.5rem; }
+      .form-check-group { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Nex<span>Gen</span></div>
+    <ul class="nav-links">
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#productos">Consolas</a></li>
+      <li><a href="#juegos">Juegos</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#cotizacion">Cotizar</a></li>
+    </ul>
+    <a href="#cotizacion" class="nav-cta">Cotizar Ahora</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <p class="hero-tag">// Marketing Digital · Consolas · Videojuegos</p>
+    <h1 class="hero-title">
+      <span class="line1">EL SIGUIENTE</span><br>
+      <span class="line2 accent-flicker">NIVEL</span><br>
+      <span class="line3">TE ESPERA</span>
+    </h1>
+    <p class="hero-sub">Distribuidores oficiales de las mejores consolas y videojuegos. Asesoría personalizada, precios competitivos y envío a todo el país.</p>
+    <div class="hero-btns">
+      <a href="#productos" class="btn-primary">Ver Catálogo</a>
+      <a href="#cotizacion" class="btn-secondary">Solicitar Cotización</a>
+    </div>
+    <div class="hero-badges">
+      <div class="badge">PlayStation 5</div>
+      <div class="badge">Xbox Series X</div>
+      <div class="badge">Nintendo Switch</div>
+      <div class="badge">PC Gaming</div>
+      <div class="badge">Accesorios</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div id="stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">+500</div>
+        <div class="stat-label">Títulos Disponibles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12K</div>
+        <div class="stat-label">Clientes Satisfechos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">48H</div>
+        <div class="stat-label">Entrega Express</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Garantía Oficial</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <section id="productos">
+    <div class="section-label">Catálogo</div>
+    <h2 class="section-title">Consolas <span>Destacadas</span></h2>
+    <p class="section-desc">Las plataformas más potentes del mercado, disponibles para ti con garantía oficial y soporte técnico.</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="card-tag">Más Vendido</div>
+        <div class="card-platform">Sony · PlayStation</div>
+        <span class="card-emoji">🎮</span>
+        <div class="card-name">PlayStation 5</div>
+        <div class="card-desc">Consola de última generación con SSD ultrarrápido, ray tracing y hasta 120fps. Con lector de discos.</div>
+        <div class="card-price"><span>COP $</span>3.299.000</div>
+      </div>
+      <div class="product-card">
+        <div class="card-tag">Nuevo</div>
+        <div class="card-platform">Sony · PlayStation</div>
+        <span class="card-emoji">🕹️</span>
+        <div class="card-name">PS5 Digital</div>
+        <div class="card-desc">Versión sin lector, más compacta y ligera. Ideal para juegos digitales y servicios de streaming.</div>
+        <div class="card-price"><span>COP $</span>2.799.000</div>
+      </div>
+      <div class="product-card">
+        <div class="card-platform">Microsoft · Xbox</div>
+        <span class="card-emoji">🟢</span>
+        <div class="card-name">Xbox Series X</div>
+        <div class="card-desc">La consola más potente de Xbox. 12 teraflops, Quick Resume y acceso a Game Pass Ultimate.</div>
+        <div class="card-price"><span>COP $</span>3.199.000</div>
+      </div>
+      <div class="product-card">
+        <div class="card-tag">Oferta</div>
+        <div class="card-platform">Microsoft · Xbox</div>
+        <span class="card-emoji">⚡</span>
+        <div class="card-name">Xbox Series S</div>
+        <div class="card-desc">La entrada perfecta a la nueva generación. Compacta, todo digital y con Game Pass incluido.</div>
+        <div class="card-price"><span>COP $</span>1.499.000</div>
+      </div>
+      <div class="product-card">
+        <div class="card-platform">Nintendo</div>
+        <span class="card-emoji">🍄</span>
+        <div class="card-name">Nintendo Switch OLED</div>
+        <div class="card-desc">Pantalla OLED vibrante de 7", modo portátil y sobremesa. La experiencia Nintendo definitiva.</div>
+        <div class="card-price"><span>COP $</span>1.899.000</div>
+      </div>
+      <div class="product-card">
+        <div class="card-platform">PC Gaming</div>
+        <span class="card-emoji">💻</span>
+        <div class="card-name">Steam Deck OLED</div>
+        <div class="card-desc">Juega tu biblioteca de Steam en cualquier lugar. Pantalla OLED HDR y hasta 8h de batería.</div>
+        <div class="card-price"><span>COP $</span>2.499.000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JUEGOS -->
+  <section id="juegos">
+    <div class="section-label">Juegos</div>
+    <h2 class="section-title">Top <span>Ventas</span></h2>
+    <p class="section-desc">Los títulos más buscados, disponibles en formato físico y digital.</p>
+    <div class="games-scroll">
+      <div class="game-card">
+        <div class="game-cover">🏍️</div>
+        <div class="game-rating">★ 9.4</div>
+        <div class="game-genre">Aventura</div>
+        <div class="game-title">Spider-Man 2</div>
+        <div class="game-platform">PS5</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">⚔️</div>
+        <div class="game-rating">★ 9.8</div>
+        <div class="game-genre">RPG</div>
+        <div class="game-title">Elden Ring</div>
+        <div class="game-platform">PS5 / Xbox / PC</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">🏎️</div>
+        <div class="game-rating">★ 9.1</div>
+        <div class="game-genre">Racing</div>
+        <div class="game-title">Forza Horizon 5</div>
+        <div class="game-platform">Xbox / PC</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">🍄</div>
+        <div class="game-rating">★ 9.6</div>
+        <div class="game-genre">Plataforma</div>
+        <div class="game-title">Super Mario Bros</div>
+        <div class="game-platform">Nintendo Switch</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">🌍</div>
+        <div class="game-rating">★ 9.5</div>
+        <div class="game-genre">Aventura</div>
+        <div class="game-title">Zelda: TotK</div>
+        <div class="game-platform">Nintendo Switch</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">🔫</div>
+        <div class="game-rating">★ 8.9</div>
+        <div class="game-genre">FPS</div>
+        <div class="game-title">Call of Duty MW3</div>
+        <div class="game-platform">PS5 / Xbox / PC</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">⚽</div>
+        <div class="game-rating">★ 8.7</div>
+        <div class="game-genre">Deportes</div>
+        <div class="game-title">FC 24</div>
+        <div class="game-platform">Multi</div>
+      </div>
+      <div class="game-card">
+        <div class="game-cover">🌌</div>
+        <div class="game-rating">★ 9.2</div>
+        <div class="game-genre">Ciencia Ficción</div>
+        <div class="game-title">Starfield</div>
+        <div class="game-platform">Xbox / PC</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog">
+    <div class="section-label">Blog</div>
+    <h2 class="section-title">Últimas <span>Noticias</span></h2>
+    <p class="section-desc">Guías, comparativas y tendencias del mundo gamer para tu estrategia de marketing digital.</p>
+    <div class="posts-grid">
+      <div class="post-featured">
+        <div class="post-img">🎮</div>
+        <div class="post-body">
+          <div class="post-meta">Marketing Digital · 12 Abr 2025</div>
+          <h3 class="post-title">Cómo Vender Consolas en Redes Sociales: Estrategias que Funcionan</h3>
+          <p class="post-excerpt">El mercado de videojuegos en Colombia creció un 23% en 2024. Te contamos las mejores estrategias de contenido para conectar con gamers y convertirlos en clientes leales de tu tienda.</p>
+        </div>
+      </div>
+      <div class="posts-sidebar">
+        <div class="post-small">
+          <div class="post-small-icon">📊</div>
+          <div>
+            <div class="post-small-title">PS5 vs Xbox Series X: La guía definitiva 2025</div>
+            <div class="post-small-date">8 Abr 2025 · Comparativas</div>
+          </div>
+        </div>
+        <div class="post-small">
+          <div class="post-small-icon">🎯</div>
+          <div>
+            <div class="post-small-title">Top 10 Juegos Más Buscados en Google Colombia</div>
+            <div class="post-small-date">5 Abr 2025 · SEO Gaming</div>
+          </div>
+        </div>
+        <div class="post-small">
+          <div class="post-small-icon">📱</div>
+          <div>
+            <div class="post-small-title">TikTok e Instagram para tiendas de videojuegos</div>
+            <div class="post-small-date">1 Abr 2025 · Social Media</div>
+          </div>
+        </div>
+        <div class="post-small">
+          <div class="post-small-icon">💡</div>
+          <div>
+            <div class="post-small-title">Bundle Marketing: Vende más combinando productos</div>
+            <div class="post-small-date">28 Mar 2025 · Estrategia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO DE COTIZACIÓN -->
+  <section id="cotizacion">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <div class="section-label" style="justify-content:center">Formulario</div>
+        <h2 class="section-title">Solicita tu <span>Cotización</span></h2>
+        <p class="section-desc" style="margin:0 auto">Completa el formulario y recibe en menos de 24h una propuesta personalizada con precios mayoristas.</p>
+      </div>
+      <div class="form-box">
+        <form id="quoteForm">
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label class="form-label" for="nombre">Nombre Completo *</label>
+              <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Juan Pérez" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="empresa">Empresa / Tienda</label>
+              <input class="form-input" type="text" id="empresa" name="empresa" placeholder="Game Zone S.A.S.">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">Correo Electrónico *</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="juan@empresa.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="telefono">Teléfono / WhatsApp *</label>
+              <input class="form-input" type="tel" id="telefono" name="telefono" placeholder="+57 300 000 0000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ciudad">Ciudad</label>
+              <input class="form-input" type="text" id="ciudad" name="ciudad" placeholder="Bogotá">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tipo_cliente">Tipo de Cliente</label>
+              <select class="form-select" id="tipo_cliente" name="tipo_cliente">
+                <option value="">Seleccionar...</option>
+                <option value="mayorista">Mayorista / Distribuidor</option>
+                <option value="minorista">Minorista / Tienda</option>
+                <option value="particular">Particular</option>
+                <option value="empresa">Empresa / Corporativo</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label">Plataformas de Interés</label>
+              <div class="form-check-group">
+                <label class="form-check"><input type="checkbox" name="plataformas" value="PS5"> PlayStation 5</label>
+                <label class="form-check"><input type="checkbox" name="plataformas" value="Xbox"> Xbox Series X/S</label>
+                <label class="form-check"><input type="checkbox" name="plataformas" value="Switch"> Nintendo Switch</label>
+                <label class="form-check"><input type="checkbox" name="plataformas" value="PC"> PC Gaming</label>
+                <label class="form-check"><input type="checkbox" name="plataformas" value="Accesorios"> Accesorios</label>
+                <label class="form-check"><input type="checkbox" name="plataformas" value="Juegos"> Solo Juegos</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cantidad">Cantidad Aproximada</label>
+              <select class="form-select" id="cantidad" name="cantidad">
+                <option value="">Seleccionar...</option>
+                <option value="1-5">1 - 5 unidades</option>
+                <option value="6-20">6 - 20 unidades</option>
+                <option value="21-50">21 - 50 unidades</option>
+                <option value="50+">Más de 50 unidades</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="presupuesto">Presupuesto Estimado</label>
+              <select class="form-select" id="presupuesto" name="presupuesto">
+                <option value="">Seleccionar...</option>
+                <option value="menos1M">Menos de $1.000.000</option>
+                <option value="1M-5M">$1.000.000 - $5.000.000</option>
+                <option value="5M-20M">$5.000.000 - $20.000.000</option>
+                <option value="mas20M">Más de $20.000.000</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="mensaje">Mensaje / Detalles Adicionales</label>
+              <textarea class="form-textarea" id="mensaje" name="mensaje" placeholder="Cuéntanos más sobre lo que necesitas, modelos específicos, condiciones de pago, etc."></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="canal">¿Cómo nos encontraste?</label>
+              <select class="form-select" id="canal" name="canal">
+                <option value="">Seleccionar...</option>
+                <option value="google">Google / Búsqueda</option>
+                <option value="instagram">Instagram</option>
+                <option value="facebook">Facebook</option>
+                <option value="tiktok">TikTok</option>
+                <option value="referido">Referido</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <button type="submit" class="form-submit">⚡ ENVIAR COTIZACIÓN</button>
+          </div>
+        </form>
+        <p class="form-note">// Los datos se almacenan de forma segura · Respuesta en menos de 24 horas hábiles</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Nex<span>Gen</span></div>
+        <p>Distribuidores de consolas y videojuegos con enfoque en marketing digital. Tu aliado estratégico en el mundo gamer.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="#">PlayStation</a></li>
+          <li><a href="#">Xbox</a></li>
+          <li><a href="#">Nintendo</a></li>
+          <li><a href="#">PC Gaming</a></li>
+          <li><a href="#">Accesorios</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Marketing</h4>
+        <ul>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">SEO Gaming</a></li>
+          <li><a href="#">Redes Sociales</a></li>
+          <li><a href="#">Email Marketing</a></li>
+          <li><a href="#">Analytics</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="#cotizacion">Cotizar</a></li>
+          <li><a href="#">Distribuidores</a></li>
+          <li><a href="#">Contacto</a></li>
+          <li><a href="#">Política de Datos</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 NexGen Store · Todos los derechos reservados</span>
+      <span>Bogotá, Colombia · NIT: 901.XXX.XXX-X</span>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== FORM HANDLER =====
+    const form = document.getElementById('quoteForm');
+    const toast = document.getElementById('toast');
+
+    function showToast(msg, isError = false) {
+      toast.textContent = msg;
+      toast.className = 'toast' + (isError ? ' error' : '');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const plataformas = [...form.querySelectorAll('input[name="plataformas"]:checked')]
+        .map(c => c.value).join(', ');
+
+      const payload = {
+        nombre:       form.nombre.value.trim(),
+        empresa:      form.empresa.value.trim(),
+        email:        form.email.value.trim(),
+        telefono:     form.telefono.value.trim(),
+        ciudad:       form.ciudad.value.trim(),
+        tipo_cliente: form.tipo_cliente.value,
+        plataformas,
+        cantidad:     form.cantidad.value,
+        presupuesto:  form.presupuesto.value,
+        mensaje:      form.mensaje.value.trim(),
+        canal:        form.canal.value,
+      };
+
+      const btn = form.querySelector('.form-submit');
+      btn.textContent = '⏳ ENVIANDO...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('http://localhost:5678/webhook-test/cotizacion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('✅ Cotización enviada correctamente. Te contactaremos pronto.');
+          form.reset();
+        } else {
+          showToast('❌ Error: ' + (data.error || 'Intenta de nuevo'), true);
+        }
+      } catch {
+        showToast('⚠️ No se pudo conectar al servidor. Verifica que esté activo.', true);
+      } finally {
+        btn.textContent = '⚡ ENVIAR COTIZACIÓN';
+        btn.disabled = false;
+      }
+    });
+
+    // ===== SCROLL REVEAL =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.product-card, .game-card, .post-featured, .post-small, .stat-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
