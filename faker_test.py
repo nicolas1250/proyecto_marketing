@@ -67,7 +67,7 @@ mensajes = [
 
 # Generador de datos falsos
 
-for i in range(20):
+for i in range(5):
 
     plataformas = random.sample(plataformas_disponibles,random.randint(1, 3))
 
